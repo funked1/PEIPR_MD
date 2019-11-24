@@ -12,8 +12,8 @@ time_stamp = datetime.datetime.now()
 
 # Sampling parameters
 NUM_CHANNELS = 8    # Number of channels in sweep
-NUM_SAMPLES = 20    # Number of samples per sweep
-FS = 200            # Sampling frequency, samples/sec
+NUM_SAMPLES = 200    # Number of samples per sweep
+FS = 20            # Sampling frequency, samples/sec
 CHANNEL_LABELS = ["F3C3", "C3O1", "F3T3", "T3O3",
                   "F4C4", "C4O2", "F4T4", "T4O2"]
 
