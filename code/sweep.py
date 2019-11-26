@@ -34,7 +34,8 @@ class Sweep():
         column_head = "{: ^20}" * self.num_channels
         fields = ["Patient Name:", "DOB:", "Patient ID:",
                   "Start Date:", "Start Time:"]
-        values = [self.patient.name, self.patient.dob,
+        pt_name = "{}, {}".format(self.patient.l_name, self.patient.f_name)
+        values = [pt_name, self.patient.dob,
                   self.patient.id, self.start_date,
                   self.start_time]
         print("-" * 160)
