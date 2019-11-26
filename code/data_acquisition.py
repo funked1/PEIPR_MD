@@ -15,7 +15,8 @@ config.read('config.ini')
 db_info = []
 for key in config['database']:
     db_info.append(config['database'][key])
-db = pymysql.connect(db_info[0], db_info[1], db_info[2], db_info[3])
+#db = pymysql.connect(db_info[0], db_info[1], db_info[2], db_info[3])
+db = pymysql.connect(host='localhost',user='testuser',password='password',db='test', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 cursor = db.cursor()
 
 # Construct empty database
