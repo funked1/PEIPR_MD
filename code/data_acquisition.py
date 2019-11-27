@@ -15,8 +15,8 @@ config.read('config.ini')
 db_info = []
 for key in config['database']:
     db_info.append(config['database'][key])
-db = pymysql.connect(db_info[0], db_info[1], db_info[2], db_info[3])
-#db = pymysql.connect(host='localhost',user='testuser',password='password',db='test', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+#db = pymysql.connect(db_info[0], db_info[1], db_info[2], db_info[3])
+db = pymysql.connect(host='localhost',user='testuser',password='password',db='test', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 cursor = db.cursor()
 
 # Construct empty database
@@ -47,6 +47,7 @@ data = sweep.Sweep(patient, datetime.datetime.now(), sp_info[0],
                    sp_info[1], sp_info[2], channel_labels)
 
 data.print_header()
+period = 1/(sp_info[2]*1.1)
 while True:
     start = timeit.default_timer()
     for i in range(int(sp_info[1])):
@@ -58,6 +59,6 @@ while True:
             #time.sleep(1/FS)
             #data.print_samples(i)
         #print(data.channels[0].data[i])
-        time.sleep(1/sp_info[2])
+        time.sleep(period)
     stop = timeit.default_timer()
     print('Time: ', stop-start)
