@@ -7,6 +7,7 @@ import time
 import datetime
 import RPi.GPIO as GPIO
 import mux_ctrl
+import Adafruit_ADS1x15
 import timeit
 
 # Setup GPIO pins for MUX control signals
@@ -15,16 +16,26 @@ GPIO.setup(8, GPIO.OUT)
 GPIO.setup(10, GPIO.OUT)
 GPIO.setup(12, GPIO.OUT)
 
+# Create ADC object and define relevent parameters
+adc = Adafruit_ADS1x15.ADS1015()
+IN_CHANNEL = 0
+GAIN = 1
+
 # Import connection credentials and connect to database
 # db_info = [host, user, pw, database]
 exec(open("./config.py").read())
 config = configparser.ConfigParser()
 config.read('config.ini')
-db_info = []
-for key in config['database']:
-    db_info.append(config['database'][key])
+#db_info = []
+#for key in config['database']:
+#    db_info.append(config['database'][key])
 #db = pymysql.connect(db_info[0], db_info[1], db_info[2], db_info[3])
-db = pymysql.connect(host='localhost',user='testuser',password='password',db='test', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+db = pymysql.connect(host        = config['database']['host'],
+                     user        = config['database']['user'],
+                     password    = config['database']['pswd'],
+                     db          = config['database']['data'],
+                     charset     = config['database']['chatset'],
+                     cursorclass = pymysql.cursors.DictCursor)
 cursor = db.cursor()
 
 # Construct empty database
@@ -55,14 +66,14 @@ data = sweep.Sweep(patient, datetime.datetime.now(), sp_info[0],
                    sp_info[1], sp_info[2], channel_labels)
 
 data.print_header()
-period = 1/#(sp_info[2]*1.1)
+period = 1/2#(sp_info[2]*1.1)
 while True:
     start = timeit.default_timer()
     for i in range(int(sp_info[1])):
         for j in range(int(sp_info[0])):
             mux_ctrl.mux_ctrl(j, GPIO)
             # get sample from ADC
-            data.set_data(j, i, i)
+            data.set_data(j, i, adc.read_adc(IN_CHANNEL, gain=GAIN))
             #ds.insert_sample(db, cursor, table_n, i, j + 1)
             #time.sleep(1/FS)
             #data.print_samples(i)

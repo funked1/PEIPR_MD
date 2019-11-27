@@ -3,10 +3,11 @@ import configparser
 config = configparser.ConfigParser()
 
 # Database connection credentials
-config['database'] = {'host': 'localhost',
-                      'user': 'root',
-                      'pswd': 'Halo4BynhzRp',
-                      'data': 'test'}
+config['database'] = {'host'   : 'localhost',
+                      'user'   : 'testuser',
+                      'pswd'   : 'password',
+                      'data'   : 'test',
+                      'charset': 'utf8mb4'}
 
 # Configure patient data
 config['patient'] = {'l_name': 'Maxwell',
