@@ -1,4 +1,4 @@
-def mux_ctrl(i):
+def mux_ctrl(i, GPIO):
     if i == 0:
         GPIO.output(8, False)
         GPIO.output(10, False)
