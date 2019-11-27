@@ -5,7 +5,15 @@ import patient as pt
 import sweep
 import time
 import datetime
+#import RPi.GPIO as GPIO
+import mux_ctrl
 import timeit
+
+# Setup GPIO pins for MUX control signals
+#GPIO.setmode(GPIO.BOARD)
+#GPIO.setup(8, GPIO.OUT)
+#GPIO.setup(10, GPIO.OUT)
+#GPIO.setup(12, GPIO.OUT)
 
 # Import connection credentials and connect to database
 # db_info = [host, user, pw, database]
@@ -52,7 +60,7 @@ while True:
     start = timeit.default_timer()
     for i in range(int(sp_info[1])):
         for j in range(int(sp_info[0])):
-            # set mux control
+            #mux_ctrl.mux_ctrl(i)
             # get sample from ADC
             data.set_data(j, i, i)
             #ds.insert_sample(db, cursor, table_n, i, j + 1)
