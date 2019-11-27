@@ -39,6 +39,7 @@ def insert_channel(db, cursor, ch_lbl):
     db.commit()
 
 def insert_sample(db, cursor, table, sample, key):
+    # function to insert sampled data into its respective table
     sql = "INSERT INTO {} (samples, ch_num) VALUES({}, {})"
     sql = sql.format(table, sample, key)
     cursor.execute(sql)

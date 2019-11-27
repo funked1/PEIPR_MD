@@ -3,9 +3,9 @@ import pymysql
 import data_storage as ds
 import patient as pt
 import sweep
-#import time
+import time
 import datetime
-#import timeit
+import timeit
 
 # Import connection credentials and connect to database
 # db_info = [host, user, pw, database]
@@ -15,8 +15,8 @@ config.read('config.ini')
 db_info = []
 for key in config['database']:
     db_info.append(config['database'][key])
-#db = pymysql.connect(db_info[0], db_info[1], db_info[2], db_info[3])
-db = pymysql.connect(host='localhost',user='testuser',password='password',db='test', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+db = pymysql.connect(db_info[0], db_info[1], db_info[2], db_info[3])
+#db = pymysql.connect(host='localhost',user='testuser',password='password',db='test', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 cursor = db.cursor()
 
 # Construct empty database
@@ -47,19 +47,17 @@ data = sweep.Sweep(patient, datetime.datetime.now(), sp_info[0],
                    sp_info[1], sp_info[2], channel_labels)
 
 data.print_header()
-#table_index = 0;
-#while True:
-#    apd = "_{}".format(table_index)
-#    table_n = TABLES[1] + apd
-#    ds.make_table(cursor, table_n, TABLES[1])
-#    start = timeit.default_timer()
-#    for i in range(NUM_SAMPLES):
-#        for j in range(NUM_CHANNELS):
-#            data.set_data(j, i, i)
+while True:
+    start = timeit.default_timer()
+    for i in range(int(sp_info[1])):
+        for j in range(int(sp_info[0])):
+            # set mux control
+            # get sample from ADC
+            data.set_data(j, i, i)
             #ds.insert_sample(db, cursor, table_n, i, j + 1)
             #time.sleep(1/FS)
             #data.print_samples(i)
-#    stop = timeit.default_timer()
-#    print('Time: ', stop-start)
-#
-#    table_index = table_index + 1
+        #print(data.channels[0].data[i])
+        time.sleep(1/sp_info[2])
+    stop = timeit.default_timer()
+    print('Time: ', stop-start)

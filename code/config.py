@@ -17,7 +17,8 @@ config['patient'] = {'l_name': 'Maxwell',
 # Configure sampling parameters
 config['sampling'] = {'num_channels': 8,
                       'num_samples' : 2000,
-                      'samp_freq'   : 1600}
+                      'samp_freq'   : 200,
+                      'temp_hist'   : 10}
 
 # Configure recording channels
 config['channels'] = {'ch1': 'f3c3',

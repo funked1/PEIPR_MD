@@ -6,9 +6,10 @@ class Patient():
         self.dob = dob
         self.id = id
 
-    # this function takes no parameters and prints a neatly formatted string
-    # that details the patient's personal information
+
     def print_data(self):
+        # function to print neatly formatted string that contains
+        # a patient's identifying information
         pt_info = ("Last name  : {}\n"
                    "First name : {}\n"
                    "DOB        : {}\n"
