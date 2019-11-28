@@ -13,5 +13,4 @@ db = pymysql.connect(host='localhost', user='testuser', password='password', db=
 cursor = db.cursor()
 
 # Construct database architecture:
-history_length = 10     # number of minutes to store data
 ds.reset_tables(cursor, int(config['sampling']['temp_hist']))

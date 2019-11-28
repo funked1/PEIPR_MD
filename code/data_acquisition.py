@@ -7,34 +7,37 @@ import time
 import datetime
 import RPi.GPIO as GPIO
 import mux_ctrl
-import Adafruit_ADS1x15
+import board
+import digitalio
+import busio
+import adafruit_ads1x15.ads1015 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
 import timeit
 
 # Setup GPIO pins for MUX control signals
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(8, GPIO.OUT)
-GPIO.setup(10, GPIO.OUT)
-GPIO.setup(12, GPIO.OUT)
+mux_1 = digitalio.DigitalInOut(board.D17)
+mux_2 = digitalio.DigitalInOut(board.D27)
+mux_3 = digitalio.DigitalInOut(board.D22)
+mux_1.direction = digitalio.Direction.OUTPUT
+mux_2.direction = digitalio.Direction.OUTPUT
+mux_3.direction = digitalio.Direction.OUTPUT
 
-# Create ADC object and define relevent parameters
-adc = Adafruit_ADS1x15.ADS1015()
-IN_CHANNEL = 0
+# Create I2C bus, define sampling parameters, and create ADC object
+i2c = busio.I2C(board.SCL, board.SDA)
 GAIN = 1
+RATE = 1600
+adc = ADS.ADS1015(i2c, gain=GAIN, data_rate=RATE)
+chan = AnalogIn(adc, ADS.P0)
 
 # Import connection credentials and connect to database
-# db_info = [host, user, pw, database]
 exec(open("./config.py").read())
 config = configparser.ConfigParser()
 config.read('config.ini')
-#db_info = []
-#for key in config['database']:
-#    db_info.append(config['database'][key])
-#db = pymysql.connect(db_info[0], db_info[1], db_info[2], db_info[3])
 db = pymysql.connect(host        = config['database']['host'],
                      user        = config['database']['user'],
                      password    = config['database']['pswd'],
                      db          = config['database']['data'],
-                     charset     = config['database']['chatset'],
+                     charset     = config['database']['charset'],
                      cursorclass = pymysql.cursors.DictCursor)
 cursor = db.cursor()
 
@@ -49,7 +52,7 @@ for key in config['patient']:
 patient = pt.Patient(pt_info[0], pt_info[1], pt_info[2], pt_info[3])
 
 # Import sampling parameters from configuration file
-# sp_info = [num_channels, num_samples, sampling_frequency]
+# sp_info = [num_channels, num_samples, sampling_freq, hist_length]
 sp_info = []
 for key in config['sampling']:
     sp_info.append(int(config['sampling'][key]))
@@ -61,23 +64,29 @@ for key in config['channels']:
 for label in channel_labels:
     ds.insert_channel(db, cursor, label)
 
-#time_stamp = datetime.datetime.now()
+# Create sweep object to store sampling data
 data = sweep.Sweep(patient, datetime.datetime.now(), sp_info[0],
                    sp_info[1], sp_info[2], channel_labels)
 
 data.print_header()
-period = 1/2#(sp_info[2]*1.1)
+#period = 1/200 #(sp_info[2]*1.1)
 while True:
     start = timeit.default_timer()
-    for i in range(int(sp_info[1])):
-        for j in range(int(sp_info[0])):
-            mux_ctrl.mux_ctrl(j, GPIO)
-            # get sample from ADC
-            data.set_data(j, i, adc.read_adc(IN_CHANNEL, gain=GAIN))
-            #ds.insert_sample(db, cursor, table_n, i, j + 1)
-            #time.sleep(1/FS)
-            #data.print_samples(i)
-        #print(data.channels[0].data[i])
-        time.sleep(period)
+    for n in range(sp_info[3]):
+        table_n = "data_{}".format(n)
+        for i in range(900): #(int(sp_info[1])):
+            for j in range(4): #(int(sp_info[0])):
+                mux_ctrl.mux_ctrl(j, mux_1, mux_2, mux_3)
+                data.set_data(j, i, chan.voltage)
+
+        for k in range(900):
+            sample = data.channels[0].get_sample(k)
+            str = "INSERT INTO {} (samples, ch_num) VALUES({}, 1)".format(table_n, sample)
+            cursor.execute(str)
+            db.commit()
+            #ds.insert_sample(db, cursor, table_n, data.channels[0].get_sample(k), 1)
+            #ds.insert_sample(db, cursor, table_n, data.channels[1].get_sample(k), 2)
+            #ds.insert_sample(db, cursor, table_n, data.channels[2].get_sample(k), 3)
+            #ds.insert_sample(db, cursor, table_n, data.channels[3].get_sample(k), 4)
     stop = timeit.default_timer()
-    print('Time: ', stop-start)
+    print('Sweep Time: {} seconds '.format( stop-start))
