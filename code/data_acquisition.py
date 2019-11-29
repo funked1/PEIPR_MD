@@ -13,6 +13,7 @@ import busio
 import adafruit_ads1x15.ads1015 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 import timeit
+import csv
 
 # Setup GPIO pins for MUX control signals
 mux_1 = digitalio.DigitalInOut(board.D17)
@@ -78,6 +79,10 @@ while True:
             for j in range(4): #(int(sp_info[0])):
                 mux_ctrl.mux_ctrl(j, mux_1, mux_2, mux_3)
                 data.set_data(j, i, chan.voltage)
-
+        
+        file = "data_{}.csv".format(n)
+        with open(file, 'w', newline='') as f:
+           writer = csv.writer(f)
+           writer.writerow(data.channels[0].data)
     stop = timeit.default_timer()
     print('Sweep Time: {} seconds '.format( stop-start))
