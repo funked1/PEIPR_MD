@@ -79,14 +79,5 @@ while True:
                 mux_ctrl.mux_ctrl(j, mux_1, mux_2, mux_3)
                 data.set_data(j, i, chan.voltage)
 
-        for k in range(900):
-            sample = data.channels[0].get_sample(k)
-            str = "INSERT INTO {} (samples, ch_num) VALUES({}, 1)".format(table_n, sample)
-            cursor.execute(str)
-            db.commit()
-            #ds.insert_sample(db, cursor, table_n, data.channels[0].get_sample(k), 1)
-            #ds.insert_sample(db, cursor, table_n, data.channels[1].get_sample(k), 2)
-            #ds.insert_sample(db, cursor, table_n, data.channels[2].get_sample(k), 3)
-            #ds.insert_sample(db, cursor, table_n, data.channels[3].get_sample(k), 4)
     stop = timeit.default_timer()
     print('Sweep Time: {} seconds '.format( stop-start))
