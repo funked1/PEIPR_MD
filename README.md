@@ -1,2 +1,2 @@
-# PEIPR_MD
-Portable Encephalographic Ictal Pattern Recognition and Monitoring Device
+# PIEPR_MD
+Pre-Ictal Encephalographic Pattern Recognition and Monitoring Device
