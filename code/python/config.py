@@ -2,15 +2,7 @@ import configparser
 
 config = configparser.ConfigParser()
 
-# Configure patient information
-config['patient'] = {
-					'last' : 'Maxwell',
-					'first': 'James',
-					'dob'  : '06/13/1831',
-					'ptid' : '123-45-6789'
-					}
-
-# Configure recording channel names
+# recording channel names
 config['channels'] = {
 					 'ch1': 'f3c3',
 					 'ch2': 'c3o1',
@@ -22,6 +14,26 @@ config['channels'] = {
 					 'ch8': 't4o2'
 					 }
 
+# patient information
+config['patient'] = {
+					'last' : 'Maxwell',
+					'first': 'James',
+					'dob'  : '06/13/1831',
+					'ptid' : '123-45-6789'
+					}
+
+# sampling parameters
+config['sampling'] = {
+					 'num channels' : 8,
+					 'sweep length' : 1125
+					 }
+
+# serial connection information
+config['serial'] = {
+					'port'     : 'COM7',
+					'baudrate' : 'baudrate = 115200',
+					'timeout'  : 'timeout = 1'
+			       }
 
 with open('config.ini', 'w') as configfile:
 	config.write(configfile)
