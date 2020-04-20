@@ -24,15 +24,17 @@ config['patient'] = {
 
 # sampling parameters
 config['sampling'] = {
-					 'num channels' : 8,
-					 'sweep length' : 1125
+					 'num_channels' : 8,
+					 'num_samples'  : 1125,
+					 'sweep_length' : 10, 	# in seconds
+					 'samp_freq'    : 112.5 # samples/sec
 					 }
 
 # serial connection information
 config['serial'] = {
 					'port'     : 'COM7',
-					'baudrate' : 'baudrate = 115200',
-					'timeout'  : 'timeout = 1'
+					'baudrate' : '115200',
+					'timeout'  : '1'
 			       }
 
 with open('config.ini', 'w') as configfile:

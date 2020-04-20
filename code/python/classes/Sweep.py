@@ -1,6 +1,7 @@
-import classes.Channel as Channel
+from classes.Channel import Channel
 
 class Sweep():
+
 	def __init__(self, pt, ts, num_channels, n, fs, labels):
 		self.patient = pt
 		self.time_stamp = ts
