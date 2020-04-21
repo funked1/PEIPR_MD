@@ -1,4 +1,5 @@
 from classes.Channel import Channel
+from classes.Patient import Patient
 
 class Sweep():
 

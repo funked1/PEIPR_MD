@@ -1,10 +1,6 @@
-class Channel():
-	def __init__(self, label, length):
-		self.label = label
-		self.data = [0] * length
-	
-	def get_sample(self, i):
-		return self.data[i]
+import numpy as np
 
-	def set_sample(self, i, sample):
-		self.data[i] = sample
+class Channel():
+	def __init__(self, label, num_samples):
+		self.label = label
+		self.data = np.empty([1, num_samples], dtype=float)
