@@ -14,3 +14,8 @@ class Sweep():
 
 		for i in range(self.num_channels):
 			self.channels.append(Channel(self.ch_labels[i], self.num_samples))
+
+	def set_channel_data(self, signal_buffer):
+
+		for i in range(self.num_channels):
+			self.channels[i].data = signal_buffer[i]

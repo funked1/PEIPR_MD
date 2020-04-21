@@ -1,9 +1,8 @@
 import serial
 import pickle
-import numpy as np
-#import data_acq
 import time
 import configparser
+import numpy as np
 from classes.Patient import Patient
 from classes.Sweep import Sweep
 
@@ -55,6 +54,9 @@ while True:
 
 	time_stamp = time.time()
 	sweep_data = Sweep(PATIENT, time_stamp, NUM_CHANNELS, NUM_SAMPLES, SAMP_FREQ, CH_LABELS)
+	sweep_data.set_channel_data(signal_buf)
+
+	# Serialize sweep data and store in file to be processed later
 	file_name = "signal_data/ufsd_" + str(int(time_stamp)) + ".p"
 	pickle.dump(sweep_data, open(file_name, "wb"))
 
