@@ -2,6 +2,7 @@ import serial
 import pickle
 import time
 import configparser
+import os
 import numpy as np
 from classes.Patient import Patient
 from classes.Sweep import Sweep
@@ -34,9 +35,9 @@ BAUDRATE = int(config['serial']['baudrate'])
 TIMEOUT  = int(config['serial']['timeout'])
 #serial_1 = serial.Serial(PORT, baudrate = BAUDRATE, timeout = TIMEOUT)
 
+# Create signal buffer to hold sorted serial data
 signal_buf = np.empty([NUM_CHANNELS, NUM_SAMPLES], dtype=float)
 
-# main loop
 while True:
 
     # Read serial data from Arduino, decode into string, parse into list
@@ -52,13 +53,22 @@ while True:
     #            signal_buf[j][i] = data_buf[index]
     #            index = index + 1
 
+	# Create Sweep object and transfer signal data from buffer to sweep channels
 	time_stamp = time.time()
-	sweep_data = Sweep(PATIENT, time_stamp, NUM_CHANNELS, NUM_SAMPLES, SAMP_FREQ, CH_LABELS)
+	sweep_data = Sweep(PATIENT, time_stamp, NUM_CHANNELS, NUM_SAMPLES,
+					   SAMP_FREQ, CH_LABELS)
 	sweep_data.set_channel_data(signal_buf)
 
-	# Serialize sweep data and store in file to be processed later
-	file_name = "signal_data/ufsd_" + str(int(time_stamp)) + ".p"
+	# Serialize sweep data to file, store in unique directory
+	dir_name = str(int(time_stamp))
+	os.mkdir('../python/signal_data/' + dir_name)
+	file_name = "signal_data/" + dir_name + "/unfiltered.p"
 	pickle.dump(sweep_data, open(file_name, "wb"))
+
+	### TO DO: ###
+	### Create new process to filter data in background
+	### Store filtered data in directory created above
+
 
 	# for testing, delete later
 	print("sweep pickled")
