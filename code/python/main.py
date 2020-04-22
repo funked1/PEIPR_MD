@@ -3,7 +3,9 @@ import pickle
 import time
 import configparser
 import os
+import multiprocessing
 import numpy as np
+import filter_data
 from classes.Patient import Patient
 from classes.Sweep import Sweep
 
@@ -67,6 +69,8 @@ while True:
 
 	### TO DO: ###
 	### Create new process to filter data in background
+	p = multiprocessing.Process(target=filter_data.apply_lowpass, args=[file_name, SAMP_FREQ])
+	p.start()
 	### Store filtered data in directory created above
 
 
