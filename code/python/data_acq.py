@@ -1,18 +1,17 @@
 import numpy as np
-from classes.Patient import Patient
-from classes.Sweep import Sweep
-from classes.Channel import Channel
 
-def create_sweep(patient, time_stamp, num_channels, num_samples,
-                 samp_freq, ch_labels):
+def simulate_serial_read(file_name):
+    fp = open(file_name, "r")
+    sim_data = fp.readline()
+    sim_data = sim_data.encode('ascii', 'strict')
+    fp.close()
+    return(sim_data)
 
-
-
-# create sweep object to store recorded data
-#rec_data = Sweep(patient, time_stamp, NUM_CHANNELS, NUM_SAMPLES,
-#                 SAMP_FREQ, CH_LABELS)
-
-
-# Generate signal vectors from recorded data
-#t_axis = np.linspace(0, SAMPLE_LENGTH, NUM_SAMPLES)
-#signals = np.loadtxt("signal_data/input.txt", dtype=float, delimiter=',')
+def sort_signal_data(data_buf, num_samples, num_channels):
+    signal_buf = np.empty([num_channels, num_samples], dtype=float)
+    idx = 0
+    for i in range(num_samples):
+        for j in range(num_channels):
+            signal_buf[j][i] = float(data_buf[idx])
+            idx = idx + 1
+    return(signal_buf)

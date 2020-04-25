@@ -3,7 +3,7 @@ import scipy
 import matplotlib.pyplot as plt
 
 NUM_CHANNELS = 8
-NUM_SAMPLES = 113
+NUM_SAMPLES = 1125
 SAMPLE_LENGTH = 1 # seconds
 TARGET_SNR = 5 #db
 MEAN_NOISE = 0
@@ -44,15 +44,25 @@ for n in range(1, NUM_CHANNELS + 1):
 	plot_titles.append(title)
 
 # Write signal contents to an text file
-np.savetxt("signal_data/input.txt", signals, delimiter=',', fmt=('%1.4f'))
+fp = open(r"signal_data/input.txt", "w")
+idx = 0
+for n in range(NUM_SAMPLES):
+	for i in range(NUM_CHANNELS):
+		buf = ("%1.4f, " % signals[i][n])
+		fp.write(buf)
+		idx = idx + 1
+fp.write("\n")
+fp.close()
+#np.savetxt("signal_data/input.txt", signals, delimiter=',', fmt=('%1.4f'))
+
 
 # Plot signals for visualization
-fig, axs = plt.subplots(2, 4)
-idx = 0
-for i in range(2):
-	for j in range(4):
-		axs[i, j].plot(t, signals[idx])
-		axs[i, j].set_title(plot_titles[idx])
-		idx = idx + 1
-
-plt.show()
+#fig, axs = plt.subplots(2, 4)
+#idx = 0
+#for i in range(2):
+#	for j in range(4):
+#		axs[i, j].plot(t, signals[idx])
+#		axs[i, j].set_title(plot_titles[idx])
+#		idx = idx + 1
+#
+#plt.show()
