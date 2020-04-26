@@ -3,4 +3,8 @@ import numpy as np
 class Channel():
 	def __init__(self, label, num_samples):
 		self.label = label
-		self.data = np.empty([1, num_samples], dtype=float)
+		self.raw_data = np.empty([1, num_samples], dtype=float)
+		self.filtered_data = 0
+
+	def init_filtered_array(self, signal_length):
+		self.filtered_data = np.empty([1, signal_length], dtype=float)

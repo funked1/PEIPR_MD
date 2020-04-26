@@ -59,19 +59,16 @@ while status:
 	# Create Sweep object and transfer signal data from buffer to sweep channels
 	sweep_data = Sweep(PATIENT, time_stamp, NUM_CHANNELS, NUM_SAMPLES,
 					   SAMP_FREQ, CH_LABELS)
-	sweep_data.set_channel_data(signal_buf)
+	sweep_data.set_raw_channel_data(signal_buf)
+
+	# Filter raw signal data
+	sweep_data = filter_data.apply_lowpass(sweep_data)
 
 	# Serialize sweep data to file, store in unique directory
 	dir_name = str(int(time_stamp))
 	os.mkdir('../python/signal_data/' + dir_name)
-	file_name = "signal_data/" + dir_name + "/unfiltered.p"
+	file_name = "signal_data/" + dir_name + "/sweep_data.p"
 	pickle.dump(sweep_data, open(file_name, "wb"))
-
-	### TO DO: ###
-	### Create new process to filter data in background
-	p = multiprocessing.Process(target=filter_data.apply_lowpass, args=[file_name, SAMP_FREQ])
-	p.start()
-	### Store filtered data in directory created above
 
 
 	# for testing, delete later
