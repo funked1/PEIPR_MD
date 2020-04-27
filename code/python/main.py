@@ -7,6 +7,7 @@ import multiprocessing
 import numpy as np
 import data_acq
 import filter_data
+import signal_plot
 from classes.Patient import Patient
 from classes.Sweep import Sweep
 
@@ -70,6 +71,7 @@ while status:
 	file_name = "signal_data/" + dir_name + "/sweep_data.p"
 	pickle.dump(sweep_data, open(file_name, "wb"))
 
+	signal_plot.plot_time_signals(sweep_data)
 
 	# for testing, delete later
 	status = False # only run once for simulation purposes
