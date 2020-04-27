@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 NUM_CHANNELS = 8
 NUM_SAMPLES = 1125
 SAMPLE_LENGTH = 1 # seconds
-TARGET_SNR = 5 #db
+TARGET_SNR = 10 #db
 MEAN_NOISE = 0
-MAINS_FREQ = 60
+MAINS_FREQ = 50
 
 # Generate 8 sine waves with different frequencies and  a 10 second duration
 signals = np.empty([NUM_CHANNELS, NUM_SAMPLES], dtype=float)

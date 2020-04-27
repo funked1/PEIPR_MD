@@ -63,7 +63,7 @@ while status:
 	sweep_data.set_raw_channel_data(signal_buf)
 
 	# Filter raw signal data
-	sweep_data = filter_data.apply_lowpass(sweep_data)
+	sweep_data = filter_data.apply_filters(sweep_data)
 
 	# Serialize sweep data to file, store in unique directory
 	dir_name = str(int(time_stamp))
