@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 NUM_CHANNELS = 8
 NUM_SAMPLES = 1125
-SAMPLE_LENGTH = 10 # seconds
+SAMPLE_LENGTH = 1 # seconds
 TARGET_SNR = 5 #db
 MEAN_NOISE = 0
 MAINS_FREQ = 60
@@ -36,7 +36,7 @@ for n in range(1, NUM_CHANNELS + 1):
 	mains_noise = 20 * np.sin(2 * MAINS_FREQ * np.pi * t)
 
 	# add noise vectors to signal
-	s = s #+ noise #+ mains_noise
+	s = s + noise #+ mains_noise
 
 	# add signal to list
 	signals[n - 1] = s
