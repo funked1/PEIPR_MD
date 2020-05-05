@@ -16,18 +16,17 @@ config['channels'] = {
 
 # patient information
 config['patient'] = {
-					'last' : 'Maxwell',
-					'first': 'James',
-					'dob'  : '06/13/1831',
-					'ptid' : '123-45-6789'
+					'last name' : 'Maxwell',
+					'first name': 'James',
+					'dob'       : '06/13/1831',
+					'ptid'      : '123-45-6789'
 					}
 
 # sampling parameters
 config['sampling'] = {
 					 'num_channels' : 8,
-					 'num_samples'  : 1125,
-					 'sweep_length' : 10, 	# in seconds
-					 'samp_freq'    : 112.5 # samples/sec
+					 'sweep_length' : 10, 	# seconds
+					 'samp_freq'    : 200   # samples/sec
 					 }
 
 # serial connection information

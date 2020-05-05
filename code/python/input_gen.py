@@ -2,17 +2,22 @@ import numpy as np
 import scipy
 import matplotlib.pyplot as plt
 
+# Sampling Paramters
 NUM_CHANNELS = 8
-NUM_SAMPLES = 1125
-SAMPLE_LENGTH = 1 # seconds
-TARGET_SNR = 10 #db
+SAMPLE_FREQ = 200	# samples per second
+SWEEP_LENGTH = 10   # seconds
+NUM_SAMPLES = SAMPLE_FREQ * SWEEP_LENGTH
+
+# Noise characteristics
+TARGET_SNR = 2	 #db
 MEAN_NOISE = 0
-MAINS_FREQ = 50
+MAINS_FREQ = 60
+
 
 # Generate 8 sine waves with different frequencies and  a 10 second duration
 signals = np.empty([NUM_CHANNELS, NUM_SAMPLES], dtype=float)
 
-t = np.linspace(0, SAMPLE_LENGTH, NUM_SAMPLES)
+t = np.linspace(0, SWEEP_LENGTH, NUM_SAMPLES)
 plot_titles = []
 for n in range(1, NUM_CHANNELS + 1):
 	# Generate pure sinusoidal signal and calculate power and average power
@@ -33,10 +38,10 @@ for n in range(1, NUM_CHANNELS + 1):
 	noise_avg_db = s_avg_db - TARGET_SNR
 	noise_avg_power = 10 ** (noise_avg_db / 10)
 	noise = np.random.normal(MEAN_NOISE, np.sqrt(noise_avg_power), NUM_SAMPLES)
-	mains_noise = 20 * np.sin(2 * MAINS_FREQ * np.pi * t)
+	mains_noise = 30 * np.sin(2 * MAINS_FREQ * np.pi * t)
 
 	# add noise vectors to signal
-	s = s + noise #+ mains_noise
+	s = s + noise + mains_noise
 
 	# add signal to list
 	signals[n - 1] = s

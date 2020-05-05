@@ -1,10 +1,11 @@
 # Defines a patient class to store patient information
 class Patient():
-	def __init__(self, l_name, f_name, dob, ptid):
-		self.l_name = l_name
-		self.f_name = f_name
-		self.dob = dob
-		self.ptid = ptid
+
+	def __init__(self, pt_info):
+		self.l_name = pt_info['last name']
+		self.f_name = pt_info['first name']
+		self.dob = pt_info['dob']
+		self.ptid = pt_info['ptid']
 
 	def print_pt_info(self):
 		# function to print human readable string that contains
