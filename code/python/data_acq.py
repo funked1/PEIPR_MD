@@ -1,4 +1,5 @@
 import numpy as np
+import serial
 
 def simulate_serial_read(file_name):
     fp = open(file_name, "r")

@@ -1,4 +1,3 @@
-import time
 import filters
 import numpy as np
 from scipy.ndimage import convolve1d
@@ -14,8 +13,6 @@ def apply_filters(sweep):
     lp_filter = filters.lpf_40(fs)
     notch_filter = filters.notch_60(fs)
     signal_buf = np.empty([num_channels, num_samples], dtype=float)
-
-    sweep.config_filtered_channels(num_samples)
 
     # Apply filters to raw channel data
     for i in range(sweep.num_channels):

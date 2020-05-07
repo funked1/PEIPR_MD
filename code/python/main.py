@@ -48,7 +48,7 @@ while status:
     time_stamp = time.time()
 
     # Read serial data from Arduino, decode into string, parse into list
-    #serial_in = serial_1.readline()
+    # serial_in = serial_1.readline()
 
     # SIMULATE reading data from serial stream by reading data from input.txt
     serial_in = data_acq.simulate_serial_read("signal_data/input.txt")
@@ -78,4 +78,5 @@ while status:
 
     # for testing, delete later
     signal_plot.plot_time_signals(sweep_data)
+    signal_plot.plot_freq_signals(sweep_data)
     status = False # only run once for simulation purposes
